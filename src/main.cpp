@@ -16,12 +16,12 @@
 #include <direct.h>
 
 // Функція для обробки зміни розміру вікна
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
     glViewport(0, 0, width, height);
 }
 
 // Функція для обробки клавіатури
-void processInput(GLFWwindow *window, Camera &camera, float deltaTime) {
+void processInput(GLFWwindow *window, Camera &camera, const float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.processKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -37,7 +37,7 @@ float lastX = 800.0f / 2.0;
 float lastY = 600.0f / 2.0;
 bool firstMouse = true;
 
-void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
+void mouse_callback(GLFWwindow *window, const double xpos, const double ypos) {
     Camera *camera = static_cast<Camera *>(glfwGetWindowUserPointer(window));
 
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
@@ -61,14 +61,14 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
 
 
 struct PlanetInfo {
-    float radius;
-    float distanceFromSun;
+    float radius; // Радіус планети
+    float distanceFromSun; // Відстань від сонця
     float axialTilt; // Нахил осі в градусах
     float rotationSpeed; // Швидкість обертання навколо своєї осі
     float orbitSpeed; // Швидкість обертання навколо сонця
     bool clockwise; // Напрямок обертання
-    glm::vec3 color;
-    const char *texturePath;
+    glm::vec3 color; // Колір планети якщо текстура відсутня
+    const char *texturePath; // Шлях до текстури
 };
 
 
@@ -203,7 +203,7 @@ int main() {
         shader.setMat4("projection", glm::value_ptr(projection));
 
         float currentTime = glfwGetTime() * TIME_SCALE;
-        glm::mat4 model = glm::mat4(1.0f);
+        auto model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, currentTime * SUN_ROTATION_SPEED, glm::vec3(0.0f, 0.0f, 1.0f)); // обертання сонця
@@ -229,7 +229,6 @@ int main() {
             shader.setMat4("view", glm::value_ptr(view));
             shader.setMat4("projection", glm::value_ptr(projection));
 
-            //float currentTime = glfwGetTime() * TIME_SCALE;
             model = glm::mat4(1.0f);
 
             bool stopPlanet = false;
@@ -266,8 +265,7 @@ int main() {
                 shader.setVec3("objectColor", planets[i].color);
             }
             planetSpheres[i].draw();
-        }
-        {
+        } {
             float moonDistanceFromEarth = 12.0f * DISTANCE_SCALE;
             float moonAxialTilt = 6.7f;
             float moonRotationSpeed = 1.0f;

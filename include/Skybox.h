@@ -12,14 +12,16 @@
 class Skybox {
 public:
     Skybox(float radius, int starCount);
-    void draw(const Shader& shader) const;
+
+    void draw(const Shader &shader) const;
 
 private:
-    GLuint VAO, VBO;
+    GLuint VAO{}, VBO{};
     std::vector<float> vertices;
-    int vertexCount;
+    int vertexCount{};
 
     void generateStarField(float radius, int starCount);
+
     void setupBuffers();
 };
 

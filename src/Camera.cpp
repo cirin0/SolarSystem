@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : front(glm::vec3(0.0f, 0.0f, -1.0f)), worldUp(up), yaw(yaw), pitch(pitch) {
     this->position = position;
@@ -11,8 +12,8 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     updateCameraVectors();
 }
 
-void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
-    float velocity = movementSpeed * deltaTime;
+void Camera::processKeyboard(const CameraMovement direction, const float deltaTime) {
+    const float velocity = movementSpeed * deltaTime;
     if (direction == FORWARD)
         position += front * velocity;
     if (direction == BACKWARD)
@@ -44,7 +45,7 @@ void Camera::updateCameraVectors() {
     front.y = sin(glm::radians(pitch));
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     this->front = glm::normalize(front);
-    right = glm::normalize(glm::cross(this->front, worldUp));  // Нормалізуємо вектор праворуч
+    right = glm::normalize(glm::cross(this->front, worldUp)); // Нормалізуємо вектор праворуч
     up = glm::normalize(glm::cross(right, this->front));
 }
 

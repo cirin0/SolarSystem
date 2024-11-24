@@ -12,75 +12,72 @@ Sphere::Sphere(const float radius, const int sectorCount, const int stackCount) 
     setupBuffers();
 }
 
-
 void Sphere::generateSphere(const float radius, const int sectorCount, const int stackCount) {
-    float x, y, z, xy;
-    float nx, ny, nz, lengthInv = 1.0f / radius;
-    float s, t;
-
-    float sectorStep = 2 * M_PI / sectorCount;
-    float stackStep = M_PI / stackCount;
-    float sectorAngle, stackAngle;
+    const float sectorStep = 2 * M_PI / sectorCount;
+    const float stackStep = M_PI / stackCount;
 
 
     for (int i = 0; i < stackCount; ++i) {
-        stackAngle = M_PI / 2 - i * stackStep;
-        float stackAngleNext = M_PI / 2 - (i + 1) * stackStep;
+        const float stackAngle = M_PI / 2 - i * stackStep;
+        const float stackAngleNext = M_PI / 2 - (i + 1) * stackStep;
 
         for (int j = 0; j < sectorCount; ++j) {
-            sectorAngle = j * sectorStep;
-            float sectorAngleNext = (j + 1) * sectorStep;
-
+            const float sectorAngle = j * sectorStep;
+            const float sectorAngleNext = (j + 1) * sectorStep;
 
             // Vertex 1
-            x = radius * cos(stackAngle) * cos(sectorAngle);
-            y = radius * cos(stackAngle) * sin(sectorAngle);
-            z = radius * sin(stackAngle);
-            s = (float)j / sectorCount;
-            t = (float)i / stackCount;
+            float x = radius * std::cos(stackAngle) * std::cos(sectorAngle);
+            float y = radius * std::cos(stackAngle) * std::sin(sectorAngle);
+            float z = radius * std::sin(stackAngle);
+            float s = (float) j / sectorCount;
+            float t = (float) i / stackCount;
             std::vector<float> vertices_temp = {x, y, z, x / radius, y / radius, z / radius, s, t};
             vertices.insert(vertices.end(), vertices_temp.begin(), vertices_temp.end());
 
             // Vertex 2
-            x = radius * cos(stackAngleNext) * cos(sectorAngle);
-            y = radius * cos(stackAngleNext) * sin(sectorAngle);
-            z = radius * sin(stackAngleNext);
-            s = (float)j / sectorCount;
-            t = (float)(i + 1) / stackCount;
-            vertices_temp = {x, y, z, x/radius, y/radius, z/radius, s, t};
+            x = radius * std::cos(stackAngleNext) * std::cos(sectorAngle);
+            y = radius * std::cos(stackAngleNext) * std::sin(sectorAngle);
+            z = radius * std::sin(stackAngleNext);
+            s = (float) j / sectorCount;
+            t = (float) (i + 1) / stackCount;
+            vertices_temp = {x, y, z, x / radius, y / radius, z / radius, s, t};
             vertices.insert(vertices.end(), vertices_temp.begin(), vertices_temp.end());
 
             // Vertex 3
-            x = radius * cos(stackAngle) * cos(sectorAngleNext);
-            y = radius * cos(stackAngle) * sin(sectorAngleNext);
-            z = radius * sin(stackAngle);
-            s = (float)(j + 1) / sectorCount;
-            t = (float)i / stackCount;
-            vertices_temp = {x, y, z, x/radius, y/radius, z/radius, s, t};
+            x = radius * std::cos(stackAngle) * std::cos(sectorAngleNext);
+            y = radius * std::cos(stackAngle) * std::sin(sectorAngleNext);
+            z = radius * std::sin(stackAngle);
+            s = (float) (j + 1) / sectorCount;
+            t = (float) i / stackCount;
+            vertices_temp = {x, y, z, x / radius, y / radius, z / radius, s, t};
             vertices.insert(vertices.end(), vertices_temp.begin(), vertices_temp.end());
 
             // Vertex 4
-            x = radius * cos(stackAngleNext) * cos(sectorAngleNext);
-            y = radius * cos(stackAngleNext) * sin(sectorAngleNext);
-            z = radius * sin(stackAngleNext);
-            s = (float)(j + 1) / sectorCount;
-            t = (float)(i + 1) / stackCount;
-            vertices_temp = {x, y, z, x/radius, y/radius, z/radius, s, t};
+            x = radius * std::cos(stackAngleNext) * std::cos(sectorAngleNext);
+            y = radius * std::cos(stackAngleNext) * std::sin(sectorAngleNext);
+            z = radius * std::sin(stackAngleNext);
+            s = (float) (j + 1) / sectorCount;
+            t = (float) (i + 1) / stackCount;
+            vertices_temp = {x, y, z, x / radius, y / radius, z / radius, s, t};
             vertices.insert(vertices.end(), vertices_temp.begin(), vertices_temp.end());
 
             // Triangle 1
             vertices.insert(vertices.end(), {
-                vertices[vertices.size()-32], vertices[vertices.size()-31], vertices[vertices.size()-30],
-                vertices[vertices.size()-29], vertices[vertices.size()-28], vertices[vertices.size()-27],
-                vertices[vertices.size()-26], vertices[vertices.size()-25]
-            });
+                                vertices[vertices.size() - 32], vertices[vertices.size() - 31],
+                                vertices[vertices.size() - 30],
+                                vertices[vertices.size() - 29], vertices[vertices.size() - 28],
+                                vertices[vertices.size() - 27],
+                                vertices[vertices.size() - 26], vertices[vertices.size() - 25]
+                            });
 
             // Triangle 2
             vertices.insert(vertices.end(), {
-                vertices[vertices.size()-16], vertices[vertices.size()-15], vertices[vertices.size()-14],
-                vertices[vertices.size()-13], vertices[vertices.size()-12], vertices[vertices.size()-11],
-                vertices[vertices.size()-10], vertices[vertices.size()-9]
-            });
+                                vertices[vertices.size() - 16], vertices[vertices.size() - 15],
+                                vertices[vertices.size() - 14],
+                                vertices[vertices.size() - 13], vertices[vertices.size() - 12],
+                                vertices[vertices.size() - 11],
+                                vertices[vertices.size() - 10], vertices[vertices.size() - 9]
+                            });
         }
     }
 }
@@ -110,13 +107,12 @@ void Sphere::setupBuffers() {
     glBindVertexArray(0);
 }
 
-
 void Sphere::loadTexture(const char *texturePath) {
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Замість GL_REPEAT
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Замість GL_REPEAT
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

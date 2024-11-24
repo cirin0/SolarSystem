@@ -14,7 +14,9 @@ public:
 
 
     void draw() const;
-    void loadTexture(const char* texturePath);
+
+    void loadTexture(const char *texturePath);
+
     bool hasTexture;
     GLuint textureID{};
 
@@ -24,6 +26,7 @@ private:
     std::vector<float> texCoords;
 
     void generateSphere(float radius, int sectorCount, int stackCount);
+
     void setupBuffers();
 };
 

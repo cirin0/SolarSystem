@@ -13,26 +13,28 @@ class Shader {
 public:
     GLuint ID;
 
-    Shader(const char* vertexPath, const char* fragmentPath);
+    Shader(const char *vertexPath, const char *fragmentPath);
+
     void use() const {
         glUseProgram(ID);
     }
 
     void setVec3(const std::string &name, float x, float y, float z) const;
-    void setMat4(const std::string &name, const GLfloat* value) const;
+
+    void setMat4(const std::string &name, const GLfloat *value) const;
 
     void setVec3(const std::string &name, const glm::vec3 &value) const;
 
-    void setBool(const std::string &name, bool value) const {
-        glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+    void setBool(const std::string &name, const bool value) const {
+        glUniform1i(glGetUniformLocation(ID, name.c_str()), (int) value);
     }
 
-    void setInt(const std::string &name, int value) const {
+    void setInt(const std::string &name, const int value) const {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
     }
 
 private:
-    static void checkCompileErrors(GLuint shader, const std::string& type);
+    static void checkCompileErrors(GLuint shader, const std::string &type);
 };
 
 #endif //SHADER_H
