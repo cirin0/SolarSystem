@@ -1,5 +1,6 @@
 #version 330 core
 out vec4 FragColor;
+uniform float u_time;
 
 void main() {
     // Створюємо круглу форму зірки
@@ -24,7 +25,7 @@ void main() {
     }
 
     // Додаємо мерехтіння
-    float time = gl_FragCoord.x * 0.05 + gl_FragCoord.y * 0.05;
+    float time = u_time + gl_FragCoord.x * 0.05 + gl_FragCoord.y * 0.05;
     float twinkle = 0.7 + 0.3 * sin(time + fract(gl_FragCoord.x * 0.1) * 6.28);
 
     // Створюємо світіння навколо зірки

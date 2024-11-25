@@ -21,7 +21,7 @@ include_directories(include/glad)
 # GLM
 include_directories(${CMAKE_SOURCE_DIR}/external/glm)
 
-add_executable(SolarSystem2 src/main.cpp
+add_executable(Solar src/main.cpp
         include/Shader.h
         src/Shader.cpp
         src/Sphere.cpp
@@ -33,6 +33,6 @@ add_executable(SolarSystem2 src/main.cpp
         src/Skybox.cpp
 )
 
-target_link_libraries(SolarSystem2 PRIVATE glfw glad)
-target_include_directories(SolarSystem2 PRIVATE include)
-target_link_directories(SolarSystem2 PRIVATE ${CMAKE_SOURCE_DIR}/external)
+target_link_libraries(Solar PRIVATE glfw glad)
+target_include_directories(Solar PRIVATE include)
+target_link_directories(Solar PRIVATE ${CMAKE_SOURCE_DIR}/external)

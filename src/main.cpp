@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <unistd.h>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Camera.h"
@@ -13,7 +14,7 @@
 #include "Skybox.h"
 #include "Sphere.h"
 
-#include <direct.h>
+//#include <direct.h>
 
 // Функція для обробки зміни розміру вікна
 void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
@@ -117,18 +118,14 @@ const PlanetInfo planets[] = {
     {
         2462.0f * RADIUS_SCALE, 1300.1f * DISTANCE_SCALE, 28.3f, 1.5f, 0.06f, false,
         glm::vec3(0.3f, 0.5f, 1.0f), "textures/neptune.jpg"
-    }, // Нептун
-    // {
-    //     173.2f * RADIUS_SCALE, 150.6f * DISTANCE_SCALE + 0.384f * DISTANCE_SCALE,
-    //     6.7f, 1.0f, 1.0f, false, glm::vec3(0.8f, 0.8f, 0.8f), "textures/moon.jpg"
-    // } // Місяць
+    }
 };
 
 int main() {
     glfwInit();
 
     // char cwd[256];
-    // if (_getcwd(cwd, sizeof(cwd)) != nullptr) {
+    //     if (getcwd(cwd, sizeof(cwd)) != nullptr) {
     //     std::cout << "Поточний каталог: " << cwd << std::endl;
     // }
 
@@ -138,7 +135,11 @@ int main() {
 
 
     // Створення вікна
-    GLFWwindow *window = glfwCreateWindow(1600, 900, "Solar System Emulator", nullptr, nullptr);
+    /* віндовс */
+    //GLFWwindow *window = glfwCreateWindow(1600, 900, "Solar System Emulator", nullptr, nullptr);
+
+    /* лінукс */
+    GLFWwindow *window = glfwCreateWindow(3000, 1500, "Solar System Emulator", nullptr, nullptr);
     if (!window) {
         std::cerr << "Не вдалося створити вікно GLFW" << std::endl;
         glfwTerminate();
@@ -173,7 +174,7 @@ int main() {
     glfwSetWindowUserPointer(window, &camera);
 
     const Shader starShader("shaders/star_vertex_shader.glsl", "shaders/star_fragment_shader.glsl");
-    Skybox skybox(50.0f, 20000);
+    Skybox skybox(8.0f, 20000); // Радіус, Кількість зірок
 
     std::cout << "Rendering..." << std::endl;
     while (!glfwWindowShouldClose(window)) {
@@ -195,7 +196,9 @@ int main() {
         starShader.use();
 
         glm::mat4 view = camera.getViewMatrix();
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.2f, 200.0f);
+        // Створюємо матрицю проекції з кутом огляду 45 градусів, співвідношенням сторін 16:9, ближньою площиною 0.1 і дальньою площиною 100.0
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 100.0f);
+
 
         // рендеринг сонця
         shader.use();
