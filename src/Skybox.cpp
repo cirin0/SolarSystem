@@ -16,7 +16,7 @@ void Skybox::generateStarField(const float radius, const int starCount) {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> phiDist(0.0f, 2.0f * M_PI);
     std::uniform_real_distribution<float> thetaDist(0.0f, M_PI);
-    std::uniform_real_distribution<float> radiusDist(radius * 0.8f, radius); // Додаємо варіацію відстані
+    std::uniform_real_distribution<float> radiusDist(radius * 20.0f, radius); // Додаємо варіацію відстані
 
     for (int i = 0; i < starCount; i++) {
         const float phi = phiDist(gen);

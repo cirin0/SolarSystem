@@ -136,7 +136,7 @@ int main() {
 
     // Створення вікна
     /* віндовс */
-    //GLFWwindow *window = glfwCreateWindow(1600, 900, "Solar System Emulator", nullptr, nullptr);
+    // GLFWwindow *window = glfwCreateWindow(1600, 900, "Solar System Emulator", nullptr, nullptr);
 
     /* лінукс */
     GLFWwindow *window = glfwCreateWindow(3000, 1500, "Solar System Emulator", nullptr, nullptr);
@@ -209,7 +209,7 @@ int main() {
         auto model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, currentTime * SUN_ROTATION_SPEED, glm::vec3(0.0f, 0.0f, 1.0f)); // обертання сонця
+        //model = glm::rotate(model, currentTime * SUN_ROTATION_SPEED, glm::vec3(0.0f, 0.0f, 1.0f)); // обертання сонця
         shader.setVec3("objectColor", 1.0f, 1.0f, 0.0f);
         shader.setMat4("model", glm::value_ptr(model));
         if (sun.hasTexture) {
