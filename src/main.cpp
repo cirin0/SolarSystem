@@ -139,7 +139,7 @@ int main() {
     // GLFWwindow *window = glfwCreateWindow(1600, 900, "Solar System Emulator", nullptr, nullptr);
 
     /* лінукс */
-    GLFWwindow *window = glfwCreateWindow(3000, 1500, "Solar System Emulator", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(2500, 1500, "Solar System Emulator", nullptr, nullptr);
     if (!window) {
         std::cerr << "Не вдалося створити вікно GLFW" << std::endl;
         glfwTerminate();
@@ -174,7 +174,7 @@ int main() {
     glfwSetWindowUserPointer(window, &camera);
 
     const Shader starShader("shaders/star_vertex_shader.glsl", "shaders/star_fragment_shader.glsl");
-    Skybox skybox(8.0f, 20000); // Радіус, Кількість зірок
+    Skybox skybox(5.0f, 10000); // Радіус, Кількість зірок // тут змінено
 
     std::cout << "Rendering..." << std::endl;
     while (!glfwWindowShouldClose(window)) {
@@ -193,8 +193,6 @@ int main() {
         glEnable(GL_PROGRAM_POINT_SIZE);
         glEnable(GL_BLEND);
 
-        starShader.use();
-
         glm::mat4 view = camera.getViewMatrix();
         // Створюємо матрицю проекції з кутом огляду 45 градусів, співвідношенням сторін 16:9, ближньою площиною 0.1 і дальньою площиною 100.0
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 100.0f);
@@ -209,7 +207,7 @@ int main() {
         auto model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        //model = glm::rotate(model, currentTime * SUN_ROTATION_SPEED, glm::vec3(0.0f, 0.0f, 1.0f)); // обертання сонця
+        // model = glm::rotate(model, currentTime * SUN_ROTATION_SPEED, glm::vec3(0.0f, 0.0f, 1.0f)); // обертання сонця
         shader.setVec3("objectColor", 1.0f, 1.0f, 0.0f);
         shader.setMat4("model", glm::value_ptr(model));
         if (sun.hasTexture) {
@@ -220,12 +218,21 @@ int main() {
         } else {
             shader.setBool("hasTexture", false);
         }
-        // відображення сонця
         sun.draw();
+
+        // TODO: доробити відображення зірок
         // відображення зірок
-        skybox.draw(starShader);
-        glDisable(GL_BLEND);
+        glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // Рендеринг зірок
+        //starShader.use();
+        starShader.setFloat("u_time", currentTime);
+        glPointSize(3.0f);
+        skybox.draw(starShader);
+        glPointParameterf(GL_POINT_SIZE, 50.0f);
+
+        glDisable(GL_BLEND);
 
         for (size_t i = 0; i < PLANETS_COUNT; ++i) {
             shader.use();
